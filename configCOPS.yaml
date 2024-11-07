@@ -20,3 +20,9 @@ is_ok: 1
 
 #Minimum improvement to consider a solution to 2-opt stable.
 improvement threshold: 0.001
+
+# Max time find the initial solution (seconds)
+max initial solution time: 3200
+
+# Max time to find a global solution (seconds)
+max global solution time: 4800

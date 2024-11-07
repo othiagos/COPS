@@ -770,8 +770,9 @@ class TabuSearchCOPS(COPS):
 
     def main(self):
         """ Compute an initial solution p0 """
+        start_time = time.time()
         # print("------ Initial Solution ---------------")
-        self.initial_solution( )
+        self.initial_solution(start_time)
         # print(f"solution {self.solution}")
         self.choose_best_solution()
 
@@ -783,6 +784,9 @@ class TabuSearchCOPS(COPS):
             if not self.cops.circular_path:
                 if self.iterations_to_change_final_set > self.max_iterations_without_improvement:
                     self.change_end_cluster()
+
+            if time.time() - start_time > self.settings["max global solution time"]:
+                break
         # print(' ------- Neighbors generated -------- ')
         """ add start end end to solution clusters_visited"""
         self.best_solution["subgroups_visited"].insert(0, self.start_cluster)
@@ -816,7 +820,7 @@ class TabuSearchCOPS(COPS):
     #     #########################################
     #     return self.best_solution
 
-    def initial_solution(self):
+    def initial_solution(self, start_time):
         """
         Generate an initial solution.Initial solution p0: For the initial solution p0, we randomly choose one cluster at a time,and for each cluster,we select the subgroup with the highest profitability level.
         The profitability level is defined here as the profit achieved by visiting the subgroup divided by the number of vertices of this subgroup. Then, this subgroup is inserted into p0, and a new tour is
@@ -840,7 +844,7 @@ class TabuSearchCOPS(COPS):
         """ For each cluster chose a subgroup with best profit and try to find a plausible path """
         early_stop = self.max_initial_solution_attempts
         
-        while any(index_clusters) and early_stop > 0:
+        while any(index_clusters) and early_stop > 0 and time.time() - start_time < self.settings["max initial solution time"]:
             """ Chose the cluster randomly """
             c = np.random.choice(index_clusters)
             max_subgroup_profit_idx = np.argmax(self.clusters[c].index_profit)
