@@ -22,7 +22,7 @@ is_ok: 1
 improvement threshold: 0.001
 
 # Max time find the initial solution (seconds)
-max initial solution time: 3200
+max initial solution time: 7200
 
 # Max time to find a global solution (seconds)
-max global solution time: 4800
+max global solution time: 14400
