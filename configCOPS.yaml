@@ -26,3 +26,6 @@ max initial solution time: 7200
 
 # Max time to find a global solution (seconds)
 max global solution time: 14400
+
+# Use max time to find the solution
+use max time: 1

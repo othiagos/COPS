@@ -785,7 +785,7 @@ class TabuSearchCOPS(COPS):
                 if self.iterations_to_change_final_set > self.max_iterations_without_improvement:
                     self.change_end_cluster()
 
-            if time.time() - start_time > self.settings["max global solution time"]:
+            if int(self.settings["use max time"]) and time.time() - start_time > self.settings["max global solution time"]:
                 break
         # print(' ------- Neighbors generated -------- ')
         """ add start end end to solution clusters_visited"""
@@ -844,7 +844,11 @@ class TabuSearchCOPS(COPS):
         """ For each cluster chose a subgroup with best profit and try to find a plausible path """
         early_stop = self.max_initial_solution_attempts
         
-        while any(index_clusters) and early_stop > 0 and time.time() - start_time < self.settings["max initial solution time"]:
+        while any(index_clusters) and early_stop > 0:
+
+            if int(self.settings["use max time"]) and time.time() - start_time > self.settings["max initial solution time"]:
+                break
+
             """ Chose the cluster randomly """
             c = np.random.choice(index_clusters)
             max_subgroup_profit_idx = np.argmax(self.clusters[c].index_profit)
